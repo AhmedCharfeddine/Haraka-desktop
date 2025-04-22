@@ -48,7 +48,7 @@ namespace Haraka.ViewModels
             }
         }
 
-        public void Save() => SettingsManager.UserPreferences.Save();
+        public void Save() => SettingsManager.Save();
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string? name = null)

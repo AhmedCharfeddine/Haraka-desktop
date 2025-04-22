@@ -13,7 +13,7 @@ namespace Haraka.Utils
         public static string GetSettingsPath()
         {
             var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var dir = Path.Combine(appData, HarakaConstants.USER_PREFERENCES_FOLDER_NAME);
+            var dir = Path.Combine(appData, HarakaConstants.APP_DATA_FOLDER_NAME);
             Directory.CreateDirectory(dir); // Ensure it exists
             return Path.Combine(dir, HarakaConstants.USER_PREFERENCES_FILE_NAME);
         }
