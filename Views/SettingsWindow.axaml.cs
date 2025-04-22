@@ -8,6 +8,7 @@ public partial class SettingsWindow : Window
     public SettingsWindow()
     {
         InitializeComponent();
+        DataContext = new SettingsViewModel();
     }
 
     private void Save_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -17,11 +18,11 @@ public partial class SettingsWindow : Window
             vm.Save();
         }
 
-        this.Close(); // Close the dialog
+        this.Close();
     }
 
     private void Cancel_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        this.Close(); // Just close, don't save
+        this.Close();
     }
 }

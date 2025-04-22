@@ -19,8 +19,19 @@
       <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
+	  
     <Resource Include="Assets/haraka-logo.ico" />
-    <Content Include="Assets/haraka-logo.ico">
+	<Content Include="Assets/haraka-logo.ico">
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
+	  
+	<Resource Include="Assets/haraka-logo-circle.ico" />
+    <Content Include="Assets/haraka-logo-circle.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+	  
+	<Resource Include="Assets/haraka-logo-purple.svg" />
+    <Content Include="Assets/haraka-logo-purple.svg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

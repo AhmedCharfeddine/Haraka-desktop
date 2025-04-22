@@ -7,7 +7,7 @@ public class UserPreferences
     private const string USER_PREFERENCES_FOLDER_NAME = "Haraka";
     private const string USER_PREFERENCES_FILE_NAME = "settings.json";
 
-    public bool Enabled { get; set; } = false;
+    public bool IsHarakaEnabled { get; set; } = false;
     public string Shortcut { get; set; } = "Ctrl+Alt+H";
     public bool LaunchOnStartup { get; set; } = true;
     public bool IsNotificationSoundEnabled { get; set; } = true;

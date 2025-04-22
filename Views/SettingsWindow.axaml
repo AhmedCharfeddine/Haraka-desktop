@@ -1,32 +1,47 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="https://github.com/avaloniaui"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+		xmlns:vm="clr-namespace:Haraka.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
         x:Class="Haraka.Views.SettingsWindow"
-        Width="400" Height="200"
+		x:DataType="vm:SettingsViewModel"
+        Width="500" Height="500"
         Title="Haraka Settings"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+		CanResize="False"
+		ExtendClientAreaToDecorationsHint="True">
 
-	<StackPanel Margin="20" Spacing="12">
+		<StackPanel Margin="20,50,20,50">
 
-		<!-- Shortcut Text Input -->
-		<StackPanel Orientation="Horizontal" Spacing="8">
-			<TextBlock Text="Shortcut:" VerticalAlignment="Center" Width="120"/>
-			<TextBox Text="{Binding Shortcut}" Width="200"/>
+			<!-- Toggle Haraka -->
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<CheckBox IsChecked="{Binding IsHarakaEnabled}"/>
+				<TextBlock Text="Enable Haraka" VerticalAlignment="Center" Width="250"/>
+			</StackPanel>
+			
+			<!-- Launch on startup -->
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<CheckBox IsChecked="{Binding LaunchOnStartup}"/>
+				<TextBlock Text="Launch on Startup" VerticalAlignment="Center" Width="250"/>
+			</StackPanel>
+			
+			<!-- Sound notification enable -->
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<CheckBox IsChecked="{Binding IsNotificationSoundEnabled}"/>
+				<TextBlock Text="Toggle sound notification" VerticalAlignment="Center" Width="250"/>
+			</StackPanel>
+
+			<!-- Shortcut Text Input -->
+			<StackPanel Orientation="Horizontal" Spacing="8" Margin="50,50,0,0">
+				<TextBlock Text="Shortcut:" VerticalAlignment="Center" Width="120"/>
+				<TextBox Text="{Binding Shortcut}" Width="200"/>
+			</StackPanel>
+
+			<!-- Buttons -->
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,200,0,0">
+				<Button Content="Save" Width="80" Click="Save_Click"/>
+				<Button Content="Cancel" Width="80" Click="Cancel_Click"/>
+			</StackPanel>
 		</StackPanel>
-
-		<!-- Launch on startup -->
-		<StackPanel Orientation="Horizontal" Spacing="8">
-			<TextBlock Text="Launch on Startup:" VerticalAlignment="Center" Width="120"/>
-			<CheckBox IsChecked="{Binding LaunchOnStartup}"/>
-		</StackPanel>
-
-		<!-- Buttons -->
-		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,20,0,0">
-			<Button Content="Save" Width="80" Click="Save_Click"/>
-			<Button Content="Cancel" Width="80" Click="Cancel_Click"/>
-		</StackPanel>
-
-	</StackPanel>
 </Window>
