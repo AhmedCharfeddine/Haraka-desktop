@@ -2,6 +2,8 @@ using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
+using Haraka.Services;
 using Haraka.Utils;
 
 namespace Haraka
@@ -87,5 +89,21 @@ namespace Haraka
             SettingsManager.UserPreferences.IsHarakaEnabled = false;
             Console.WriteLine("Toggled OFF");
         }
+        private async void Transliterate(object? sender, RoutedEventArgs e)
+        {
+            var input = InputTextBox.Text;
+
+            if (string.IsNullOrWhiteSpace(input) || input.Length <= 3)
+            {
+                TransliterationResult.Text = "Please enter a word.";
+                return;
+            }
+
+            var wrapper = new HarakaWrapper();
+            // Run the CLI and get output
+            string result = await wrapper.RunTransliterationAsync(input);
+            TransliterationResult.Text = result;
+        }
+
     }
 }

@@ -6,11 +6,16 @@
         mc:Ignorable="d" Width="500" Height="600"
         x:Class="Haraka.MainWindow"
         Title="Welcome to Haraka!">
-    Welcome to Haraka!
-	
-	This window will be used in order to show the user 
-	
-	a quick demo on how to use the app.
-	
-	It will also have a checkbox with "Don't show again"
+
+	<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+		<TextBlock HorizontalAlignment="Center" Text="Welcome to Haraka!"/>
+		<TextBlock HorizontalAlignment="Center" Text="This window will be used in order to show the user"/>
+		<TextBlock HorizontalAlignment="Center" Text="a quick demo on how to use the app."/>
+		<TextBlock HorizontalAlignment="Center" Text="It will also have a checkbox with"/>
+		<TextBlock HorizontalAlignment="Center" Text="'Do not show again'"/>
+		
+		<TextBox Name="InputTextBox" Width="200" Margin="20,20,20,20"/>
+		<Button HorizontalAlignment="Center" Content="Try it!" Width="80" Click="Transliterate"/>
+		<TextBlock HorizontalAlignment="Center" Name="TransliterationResult"/>
+	</StackPanel>
 </Window>
