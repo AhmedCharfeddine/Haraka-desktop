@@ -80,13 +80,13 @@ namespace Haraka
 
         private void ToggleOn(NativeMenuItem toggleOff)
         {
-            SettingsManager.UserPreferences.IsHarakaEnabled = true;
+            SettingsManager.EnableHaraka();
             Console.WriteLine("Toggled ON");
         }
 
         private void ToggleOff(NativeMenuItem toggleOn)
         {
-            SettingsManager.UserPreferences.IsHarakaEnabled = false;
+            SettingsManager.DisableHaraka();
             Console.WriteLine("Toggled OFF");
         }
         private async void Transliterate(object? sender, RoutedEventArgs e)

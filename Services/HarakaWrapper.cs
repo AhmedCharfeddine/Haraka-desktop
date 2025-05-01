@@ -7,7 +7,7 @@ using Haraka.Utils;
 
 namespace Haraka.Services
 {
-    internal class HarakaWrapper
+    public class HarakaWrapper
     {
         private string? _harakaBinaryPath { get; set; } = GetHarakaBinaryPath();
 
