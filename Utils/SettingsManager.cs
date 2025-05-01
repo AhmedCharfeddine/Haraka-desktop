@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using Haraka.Services;
 
 namespace Haraka.Utils
 {
@@ -41,6 +42,17 @@ namespace Haraka.Utils
 
         public static void Save()
         {
+            // Toggle Haraka daemon
+            if (UserPreferences.IsHarakaEnabled)
+            {
+                TypingDaemon.Instance.Start();
+            }
+            else
+            {
+                TypingDaemon.Instance.Stop();
+            }
+
+            // Store preferences
             try
             {
                 var dir = Path.GetDirectoryName(SettingsPath);
@@ -54,6 +66,17 @@ namespace Haraka.Utils
             {
                 Console.WriteLine($"Failed to save settings: {ex.Message}");
             }
+        }
+        public static void EnableHaraka()
+        {
+            UserPreferences.IsHarakaEnabled = true;
+            Save();
+        }
+
+        public static void DisableHaraka()
+        {
+            UserPreferences.IsHarakaEnabled = false;
+            Save();
         }
     }
 }

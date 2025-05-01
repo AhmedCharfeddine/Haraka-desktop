@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Haraka.Utils;
 
 namespace Haraka
 {
@@ -9,6 +10,10 @@ namespace Haraka
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+            if (SettingsManager.UserPreferences.IsHarakaEnabled)
+            {
+                SettingsManager.EnableHaraka();
+            }
         }
 
         public override void OnFrameworkInitializationCompleted()
