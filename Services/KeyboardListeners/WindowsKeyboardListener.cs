@@ -24,6 +24,7 @@ namespace Haraka.Services.KeyboardListeners
             _globalHook = Hook.GlobalEvents();
             _globalHook.KeyPress += OnKeyPress;
             _globalHook.KeyDown += OnKeyDown;
+            _globalHook.MouseClick += OnMouseClick;
             _isListening = true;
 #endif
         }
@@ -69,10 +70,13 @@ namespace Haraka.Services.KeyboardListeners
                 WordTyped?.Invoke(this, _currentWord.ToString());
             }
         }
-#endif
+        private void OnMouseClick(object? sender, MouseEventArgs e)
+        {
+            // Clear Buffer on mouse clicks
+            ResetCurrentWord();
+        }
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {
-#if WINDOWS
             if (e.KeyCode == Keys.Back)
             {
                 if (_currentWord.Length > 0)

@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Threading;
 using Haraka.Services.CaretPositionProvider;
 using System;
 using System.Timers;
@@ -8,8 +7,6 @@ namespace Haraka.Views;
 
 public partial class SuggestionPopup : Window
 {
-    private readonly Timer _autoCloseTimer;
-
     public SuggestionPopup()
     {
         InitializeComponent();
