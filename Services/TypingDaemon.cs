@@ -4,6 +4,7 @@ using System.Timers;
 using Avalonia.Threading;
 using Haraka.Services.CaretPositionProvider;
 using Haraka.Services.KeyboardListeners;
+using Haraka.Services.SuggestionInjector;
 using Haraka.Views;
 
 namespace Haraka.Services
@@ -12,14 +13,15 @@ namespace Haraka.Services
     {
         private readonly IKeyboardListener _keyboardListener;
         private readonly ICaretPositionProvider _caretPositionProvider;
+        private readonly ISuggestionInjector _suggestionInjector;
         private readonly HarakaWrapper _harakaWrapper;
         private readonly SuggestionPopup _suggestionPopup;
-        private Timer _debounceTimer;
-        private Timer _autoClosePopupTimer;
+        private readonly Timer _debounceTimer;
+        private readonly Timer _autoClosePopupTimer;
         private string _latestWord;
 
         private static readonly Lazy<TypingDaemon> _instance =
-            new Lazy<TypingDaemon>(() => new TypingDaemon());
+            new(() => new TypingDaemon());
 
         public static TypingDaemon Instance => _instance.Value;
 
@@ -31,21 +33,15 @@ namespace Haraka.Services
             _debounceTimer.AutoReset = false;
             _debounceTimer.Elapsed += async (_, _) => await OnDebounceElapsedAsync();
 
-            if (OperatingSystem.IsWindows())
-            {
-                _keyboardListener = new WindowsKeyboardListener();
-                _caretPositionProvider = new WindowsCaretPositionProvider();
-            }
-            else
-            {
-                _keyboardListener = new LinuxKeyboardListener();
-                _caretPositionProvider = new DefaultCaretPositionProvider();
-            }
+            _keyboardListener = new WindowsKeyboardListener();
+            _caretPositionProvider = new WindowsCaretPositionProvider();
+            _suggestionInjector = new WindowsSuggestionInjector();
 
             _keyboardListener.WordTyped += OnWordTyped;
+            _keyboardListener.WordAccepted += OnWordAccepted;
 
-            // Auto-close after 4 seconds
-            _autoClosePopupTimer = new Timer(4000);
+            // Auto-close after 2 seconds
+            _autoClosePopupTimer = new Timer(2000);
             _autoClosePopupTimer.Elapsed += (s, e) => Dispatcher.UIThread.Post(() =>
             {
 
@@ -69,21 +65,24 @@ namespace Haraka.Services
 
         private async Task OnDebounceElapsedAsync()
         {
-            var suggestion = await _harakaWrapper.RunTransliterationAsync(_latestWord);
-
-            await Dispatcher.UIThread.InvokeAsync(() =>
+            if (_latestWord.Length > 3) // TODO: make this an app config
             {
-                if (!string.IsNullOrWhiteSpace(suggestion))
+                var suggestion = await _harakaWrapper.RunTransliterationAsync(_latestWord);
+
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-                    _autoClosePopupTimer?.Stop();
-                    _autoClosePopupTimer?.Start();
-                    _suggestionPopup.ShowNearCaret(_caretPositionProvider, suggestion);
-                }
-                else
-                {
-                    _suggestionPopup.Hide();
-                }
-            });
+                    if (!string.IsNullOrWhiteSpace(suggestion))
+                    {
+                        _autoClosePopupTimer?.Stop();
+                        _autoClosePopupTimer?.Start();
+                        _suggestionPopup.ShowNearCaret(_caretPositionProvider, suggestion);
+                    }
+                    else
+                    {
+                        _suggestionPopup.Hide();
+                    }
+                });
+            }
         }
 
         private void OnWordTyped(object? sender, string word)
@@ -91,6 +90,18 @@ namespace Haraka.Services
             _latestWord = word;
             _debounceTimer.Stop();
             _debounceTimer.Start();
+        }
+
+        private async void OnWordAccepted(object? sender, string word)
+        {
+            if (_suggestionPopup.IsVisible
+                && _latestWord.Length >= 3 // TODO: make this an app config
+                && string.Equals(_latestWord, word))
+            {
+                 var suggestion = await _harakaWrapper.RunTransliterationAsync(word);
+                _suggestionInjector.Apply(word, suggestion);
+            }
+            _latestWord = string.Empty;
         }
     }
 }

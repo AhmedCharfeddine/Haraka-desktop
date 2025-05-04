@@ -10,7 +10,7 @@
     Background="Transparent"
     Topmost="True"
     ShowInTaskbar="False"
-	Focusable="False"
+	ShowActivated="False"
     WindowStartupLocation="Manual">
 
 	<Border Background="MediumSeaGreen" CornerRadius="8" BorderBrush="Black" BorderThickness="2">

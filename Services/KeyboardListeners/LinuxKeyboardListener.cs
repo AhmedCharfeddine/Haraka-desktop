@@ -5,6 +5,7 @@ namespace Haraka.Services.KeyboardListeners
     public class LinuxKeyboardListener : IKeyboardListener
     {
         public event EventHandler<string>? WordTyped;
+        public event EventHandler<string> WordAccepted;
 
         public void ResetCurrentWord()
         {
