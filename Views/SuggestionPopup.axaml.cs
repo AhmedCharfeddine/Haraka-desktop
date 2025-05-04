@@ -1,7 +1,8 @@
 using Avalonia.Controls;
+using Avalonia.Platform;
 using Haraka.Services.CaretPositionProvider;
 using System;
-using System.Timers;
+using System.Runtime.InteropServices;
 
 namespace Haraka.Views;
 

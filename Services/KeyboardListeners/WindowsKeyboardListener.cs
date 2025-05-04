@@ -1,23 +1,21 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
 using System.Text;
-#if WINDOWS
 using System.Windows.Forms;
-#endif
 
 namespace Haraka.Services.KeyboardListeners
 {
     public class WindowsKeyboardListener : IKeyboardListener
     {
         public event EventHandler<string>? WordTyped;
+        public event EventHandler<string> WordAccepted;
 
         private IKeyboardMouseEvents? _globalHook;
-        private StringBuilder _currentWord = new StringBuilder();
+        private readonly StringBuilder _currentWord = new();
         private bool _isListening = false;
 
         public void StartListening()
         {
-#if WINDOWS
             if (_isListening)
                 return;
 
@@ -26,12 +24,10 @@ namespace Haraka.Services.KeyboardListeners
             _globalHook.KeyDown += OnKeyDown;
             _globalHook.MouseClick += OnMouseClick;
             _isListening = true;
-#endif
         }
 
         public void StopListening()
         {
-#if WINDOWS
             if (!_isListening)
                 return;
 
@@ -44,17 +40,14 @@ namespace Haraka.Services.KeyboardListeners
 
             _isListening = false;
             ResetCurrentWord();
-#endif
         }
 
         public void ResetCurrentWord()
         {
-#if WINDOWS
             _currentWord.Clear();
-#endif
+            WordTyped?.Invoke(this, String.Empty);
         }
 
-#if WINDOWS
         private void OnKeyPress(object? sender, KeyPressEventArgs e)
         {
             if (char.IsWhiteSpace(e.KeyChar))
@@ -65,10 +58,7 @@ namespace Haraka.Services.KeyboardListeners
             {
                 _currentWord.Append(e.KeyChar);
             }
-            if (_currentWord.Length > 0)
-            {
-                WordTyped?.Invoke(this, _currentWord.ToString());
-            }
+            WordTyped?.Invoke(this, _currentWord.ToString());
         }
         private void OnMouseClick(object? sender, MouseEventArgs e)
         {
@@ -90,9 +80,14 @@ namespace Haraka.Services.KeyboardListeners
             else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
             {
                 // Assume caret moved -> invalidate the buffer
+                // TODO: could probably improve this behavior
+                ResetCurrentWord();
+            }
+            else if (e.KeyCode == Keys.Space)
+            {
+                WordAccepted?.Invoke(this, _currentWord.ToString());
                 ResetCurrentWord();
             }
         }
-#endif
     }
 }

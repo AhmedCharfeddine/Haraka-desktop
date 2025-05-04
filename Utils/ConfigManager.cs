@@ -51,7 +51,7 @@ namespace Haraka.Utils
                 }
             }
             catch 
-            { 
+            {
                 Config = new AppConfig();
             }
         }
