@@ -1,5 +1,6 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -65,17 +66,21 @@ namespace Haraka.Services.KeyboardListeners
             // Clear Buffer on mouse clicks
             ResetCurrentWord();
         }
+
         private void OnKeyDown(object? sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Back)
             {
-                if (_currentWord.Length > 0)
-                    _currentWord.Length -= 1;
-            }
-            else if (e.Control && e.KeyCode == Keys.Back)
-            {
-                // Wipe the current word (simulate ctrl+backspace)
-                ResetCurrentWord();
+                if (e.Control)
+                {
+                    // Wipe the current word (simulate ctrl+backspace)
+                    ResetCurrentWord();
+                }
+                else
+                {
+                    if (_currentWord.Length > 0)
+                        _currentWord.Length -= 1;
+                }
             }
             else if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right || e.KeyCode == Keys.Home || e.KeyCode == Keys.End)
             {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Haraka.Utils
+﻿namespace Haraka.Utils
 {
     public class HarakaConstants
     {
@@ -21,5 +15,10 @@ namespace Haraka.Utils
         public const string HARAKA_BINARY_NAME_WINDOWS = "Haraka.exe";
         public const string HARAKA_BINARY_NAME_UNIX = "Haraka";
         public const string BIN_FOLDER = "bin";
+
+        public static int DEFAULT_MINIMUM_WORD_LENGTH = 3;
+
+        public static int DEFAULT_AUTO_CLOSE_POPUP_DELAY_MS = 4000;
+        public static int DEFAULT_POPUP_DEBOUNCE_DELAY_MS = 300;
     }
 }

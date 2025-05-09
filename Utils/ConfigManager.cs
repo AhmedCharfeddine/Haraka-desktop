@@ -1,15 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using Haraka.Models;
 
 
 namespace Haraka.Utils
 {
-    public class AppConfig
-    {
-        public string Strategy { get; set; } = HarakaConstants.DEFAULT_STRATEGY;
-    }
-
     public static class ConfigManager
     {
         private static readonly string ConfigPath = GetConfigPath();
