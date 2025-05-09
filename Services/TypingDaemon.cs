@@ -5,6 +5,7 @@ using Avalonia.Threading;
 using Haraka.Services.CaretPositionProvider;
 using Haraka.Services.KeyboardListeners;
 using Haraka.Services.SuggestionInjector;
+using Haraka.Utils;
 using Haraka.Views;
 
 namespace Haraka.Services
@@ -18,7 +19,7 @@ namespace Haraka.Services
         private readonly SuggestionPopup _suggestionPopup;
         private readonly Timer _debounceTimer;
         private readonly Timer _autoClosePopupTimer;
-        private string _latestWord;
+        private string _latestWord = string.Empty;
 
         private static readonly Lazy<TypingDaemon> _instance =
             new(() => new TypingDaemon());
@@ -29,7 +30,7 @@ namespace Haraka.Services
         {
             _harakaWrapper = new HarakaWrapper();
             _suggestionPopup = new SuggestionPopup();
-            _debounceTimer = new Timer(300);
+            _debounceTimer = new Timer(ConfigManager.Config.PopupDebounceDelayMs);
             _debounceTimer.AutoReset = false;
             _debounceTimer.Elapsed += async (_, _) => await OnDebounceElapsedAsync();
 
@@ -40,8 +41,8 @@ namespace Haraka.Services
             _keyboardListener.WordTyped += OnWordTyped;
             _keyboardListener.WordAccepted += OnWordAccepted;
 
-            // Auto-close after 2 seconds
-            _autoClosePopupTimer = new Timer(2000);
+            // Auto-close popup after delay
+            _autoClosePopupTimer = new Timer(ConfigManager.Config.AutoClosePopupDelayMs);
             _autoClosePopupTimer.Elapsed += (s, e) => Dispatcher.UIThread.Post(() =>
             {
 
@@ -65,7 +66,7 @@ namespace Haraka.Services
 
         private async Task OnDebounceElapsedAsync()
         {
-            if (_latestWord.Length > 3) // TODO: make this an app config
+            if (_latestWord.Length >= ConfigManager.Config.MinWordLength)
             {
                 var suggestion = await _harakaWrapper.RunTransliterationAsync(_latestWord);
 
@@ -90,18 +91,24 @@ namespace Haraka.Services
             _latestWord = word;
             _debounceTimer.Stop();
             _debounceTimer.Start();
+
+            if (string.IsNullOrEmpty(word))
+            {
+                _suggestionPopup.Hide();
+            }
         }
 
         private async void OnWordAccepted(object? sender, string word)
         {
             if (_suggestionPopup.IsVisible
-                && _latestWord.Length >= 3 // TODO: make this an app config
+                && _latestWord.Length >= ConfigManager.Config.MinWordLength
                 && string.Equals(_latestWord, word))
             {
                  var suggestion = await _harakaWrapper.RunTransliterationAsync(word);
                 _suggestionInjector.Apply(word, suggestion);
             }
             _latestWord = string.Empty;
+            _suggestionPopup.Hide();
         }
     }
 }
