@@ -1,7 +1,8 @@
-﻿public class UserPreferences
+﻿namespace Haraka.Models;
+public class UserPreferences
 {
     public bool IsHarakaEnabled { get; set; } = false;
-    public string Shortcut { get; set; } = "Ctrl+Alt+H";
     public bool LaunchOnStartup { get; set; } = true;
     public bool IsNotificationSoundEnabled { get; set; } = true;
+    public ToggleShortcut? Shortcut { get; set; }
 }

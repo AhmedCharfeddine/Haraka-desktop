@@ -1,6 +1,5 @@
 ﻿using Gma.System.MouseKeyHook;
 using System;
-using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,33 +13,38 @@ namespace Haraka.Services.KeyboardListeners
         private IKeyboardMouseEvents? _globalHook;
         private readonly StringBuilder _currentWord = new();
         private bool _isListening = false;
+        public event Action<Shortcut>? ShortcutRecorded;
+        private bool _recordingHotkey = false;
+
 
         public void StartListening()
         {
-            if (_isListening)
-                return;
-
-            _globalHook = Hook.GlobalEvents();
-            _globalHook.KeyPress += OnKeyPress;
-            _globalHook.KeyDown += OnKeyDown;
-            _globalHook.MouseClick += OnMouseClick;
-            _isListening = true;
+            if (!_isListening)
+            {
+                _globalHook = Hook.GlobalEvents();
+                _globalHook.KeyPress += OnKeyPress;
+                _globalHook.KeyDown += OnKeyDown;
+                _globalHook.MouseClick += OnMouseClick;
+                _isListening = true;
+            }
         }
 
         public void StopListening()
         {
-            if (!_isListening)
-                return;
-
-            if (_globalHook != null)
+            if (_isListening)
             {
-                _globalHook.KeyPress -= OnKeyPress;
-                _globalHook.Dispose();
-                _globalHook = null;
-            }
+                if (_globalHook != null)
+                {
+                    _globalHook.KeyPress -= OnKeyPress;
+                    _globalHook.KeyDown -= OnKeyDown;
+                    _globalHook.MouseClick -= OnMouseClick;
+                    _globalHook.Dispose();
+                    _globalHook = null;
+                }
 
-            _isListening = false;
-            ResetCurrentWord();
+                _isListening = false;
+                ResetCurrentWord();
+            }
         }
 
         public void ResetCurrentWord()
@@ -93,6 +97,34 @@ namespace Haraka.Services.KeyboardListeners
                 WordAccepted?.Invoke(this, _currentWord.ToString());
                 ResetCurrentWord();
             }
+        }
+
+        public void StartRecordingShortcut()
+        {
+            _recordingHotkey = true;
+        }
+
+        public void StopRecordingShortcut()
+        {
+            _recordingHotkey = false;
+        }
+        private void OnShortcutRecordingKeyPress(object? sender, KeyPressEventArgs e)
+        {
+            if (_recordingHotkey)
+            {
+                var shortcut = BuildShortcutFromCurrentState(e);
+                ShortcutRecorded?.Invoke(shortcut);
+                _recordingHotkey = false;
+                return;
+            }
+
+            // Normal key press handling for TypingDaemon
+            // WordTyped?.Invoke(...);
+        }
+
+        private Shortcut BuildShortcutFromCurrentState(KeyPressEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
