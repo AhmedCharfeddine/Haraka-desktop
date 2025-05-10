@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text.Json;
+using Haraka.Models;
 using Haraka.Services;
 
 namespace Haraka.Utils
@@ -70,7 +71,7 @@ namespace Haraka.Utils
         public static void EnableHaraka()
         {
             UserPreferences.IsHarakaEnabled = true;
-            Save();
+            Save(); 
         }
 
         public static void DisableHaraka()
