@@ -10,10 +10,12 @@ namespace Haraka
 {
     public partial class MainWindow : Window
     {
+        private readonly AppServices _appServices;
         private TrayIcon _trayIcon;
 
-        public MainWindow()
+        public MainWindow(AppServices services)
         {
+            _appServices = services;
             InitializeComponent();
             InitializeTrayIcon();
             InitializeAppIcon();
@@ -33,7 +35,7 @@ namespace Haraka
                 Menu = CreateTrayMenu()
             };
 
-            _trayIcon.Clicked += (_, __) => WindowManager.OpenSettingsWindow();
+            _trayIcon.Clicked += (_, __) => WindowManager.OpenSettingsWindow(_appServices);
 
             _trayIcon.IsVisible = true;
         }
@@ -58,7 +60,7 @@ namespace Haraka
             };
 
             var settingsItem = new NativeMenuItem("Settings");
-            settingsItem.Click += (_, __) => WindowManager.OpenSettingsWindow();
+            settingsItem.Click += (_, __) => WindowManager.OpenSettingsWindow(_appServices);
 
             var quitItem = new NativeMenuItem("Quit");
             quitItem.Click += (_, __) => QuitApp();
@@ -80,13 +82,13 @@ namespace Haraka
 
         private void ToggleOn(NativeMenuItem toggleOff)
         {
-            SettingsManager.EnableHaraka();
+            _appServices.SettingsManager.EnableHaraka();
             Console.WriteLine("Toggled ON");
         }
 
         private void ToggleOff(NativeMenuItem toggleOn)
         {
-            SettingsManager.DisableHaraka();
+            _appServices.SettingsManager.DisableHaraka();
             Console.WriteLine("Toggled OFF");
         }
         private async void Transliterate(object? sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Haraka.Models;
 
 namespace Haraka.Services.KeyboardListeners
 {
@@ -6,15 +7,14 @@ namespace Haraka.Services.KeyboardListeners
     {
         event EventHandler<string> WordTyped;
         event EventHandler<string> WordAccepted;
-        void StartListening()
-        {
-            Console.WriteLine("Keyboard listening is not supported on this platform.");
-        }
+        event EventHandler? ShortcutTriggered;
 
-        void StopListening()
-        {
-            Console.WriteLine("Keyboard listening is not supported on this platform.");
-        }
+        void StartListeningForShortcut();
+        void StopListeningForShortcut();
+
+        void StartListeningForTyping();
+        void StopListeningForTyping();
+        void SetToggleShortcut(ToggleShortcut shortcut);
 
         void ResetCurrentWord();
     }

@@ -4,7 +4,7 @@ using WindowsInput.Native;
 
 namespace Haraka.Services.SuggestionInjector
 {
-    internal class WindowsSuggestionInjector : ISuggestionInjector
+    public class WindowsSuggestionInjector : ISuggestionInjector
     {
         private readonly InputSimulator _inputSimulator = new();
 

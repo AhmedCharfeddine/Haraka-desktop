@@ -8,7 +8,7 @@ using Haraka.Services.SuggestionInjector;
 using Haraka.Utils;
 using Haraka.Views;
 
-namespace Haraka.Services
+namespace Haraka.Services.KeystrokeManagers
 {
     public class TypingDaemon
     {
@@ -21,12 +21,8 @@ namespace Haraka.Services
         private readonly Timer _autoClosePopupTimer;
         private string _latestWord = string.Empty;
 
-        private static readonly Lazy<TypingDaemon> _instance =
-            new(() => new TypingDaemon());
-
-        public static TypingDaemon Instance => _instance.Value;
-
-        public TypingDaemon()
+        public TypingDaemon(IKeyboardListener keyboardListener,
+            WindowsCaretPositionProvider caretPositionProvider, WindowsSuggestionInjector suggestionInjector)
         {
             _harakaWrapper = new HarakaWrapper();
             _suggestionPopup = new SuggestionPopup();
@@ -34,9 +30,9 @@ namespace Haraka.Services
             _debounceTimer.AutoReset = false;
             _debounceTimer.Elapsed += async (_, _) => await OnDebounceElapsedAsync();
 
-            _keyboardListener = new WindowsKeyboardListener();
-            _caretPositionProvider = new WindowsCaretPositionProvider();
-            _suggestionInjector = new WindowsSuggestionInjector();
+            _keyboardListener = keyboardListener;
+            _caretPositionProvider = caretPositionProvider;
+            _suggestionInjector = suggestionInjector;
 
             _keyboardListener.WordTyped += OnWordTyped;
             _keyboardListener.WordAccepted += OnWordAccepted;
@@ -55,12 +51,12 @@ namespace Haraka.Services
 
         public void Start()
         {
-            _keyboardListener.StartListening();
+            _keyboardListener.StartListeningForTyping();
         }
 
         public void Stop()
         {
-            _keyboardListener.StopListening();
+            _keyboardListener.StopListeningForTyping();
             _debounceTimer.Stop();
         }
 
@@ -104,7 +100,7 @@ namespace Haraka.Services
                 && _latestWord.Length >= ConfigManager.Config.MinWordLength
                 && string.Equals(_latestWord, word))
             {
-                 var suggestion = await _harakaWrapper.RunTransliterationAsync(word);
+                var suggestion = await _harakaWrapper.RunTransliterationAsync(word);
                 _suggestionInjector.Apply(word, suggestion);
             }
             _latestWord = string.Empty;
