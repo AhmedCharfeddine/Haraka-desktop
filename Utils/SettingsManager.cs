@@ -2,36 +2,32 @@
 using System.IO;
 using System.Text.Json;
 using Haraka.Models;
-using Haraka.Services;
+using Haraka.Services.KeystrokeManagers;
 
 namespace Haraka.Utils
 {
-    public static class SettingsManager
+    public class SettingsManager
     {
-        public static UserPreferences UserPreferences { get; set; }
+        public UserPreferences UserPreferences { get; set; }
+        public ToggleShortcut? TemporaryShortcut { get; set; }
 
-        private static readonly string SettingsPath = GetSettingsPath();
+        private readonly string _settingsPath;
+        private readonly TypingDaemon _typingDaemon;
 
-        public static string GetSettingsPath()
+        public SettingsManager(TypingDaemon typingDaemon)
         {
-            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            var dir = Path.Combine(appData, HarakaConstants.APP_DATA_FOLDER_NAME);
-            Directory.CreateDirectory(dir); // Ensure it exists
-            return Path.Combine(dir, HarakaConstants.USER_PREFERENCES_FILE_NAME);
+            _settingsPath = GetSettingsPath();
+            LoadUserPreferences();
+            _typingDaemon = typingDaemon;
         }
 
-        static SettingsManager()
-        {
-            Load();
-        }
-
-        public static void Load()
+        private void LoadUserPreferences()
         {
             try
             {
-                if (File.Exists(SettingsPath))
+                if (File.Exists(_settingsPath))
                 {
-                    var json = File.ReadAllText(SettingsPath);
+                    var json = File.ReadAllText(_settingsPath);
                     UserPreferences = JsonSerializer.Deserialize<UserPreferences>(json) ?? new UserPreferences();
                 }
             }
@@ -40,41 +36,53 @@ namespace Haraka.Utils
                 UserPreferences = new UserPreferences(); // fallback
             }
         }
+        private static string GetSettingsPath()
+        {
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var dir = Path.Combine(appData, HarakaConstants.APP_DATA_FOLDER_NAME);
+            Directory.CreateDirectory(dir); // Ensure it exists
+            return Path.Combine(dir, HarakaConstants.USER_PREFERENCES_FILE_NAME);
+        }
 
-        public static void Save()
+        public void Save()
         {
             // Toggle Haraka daemon
             if (UserPreferences.IsHarakaEnabled)
             {
-                TypingDaemon.Instance.Start();
+                _typingDaemon.Start();
             }
             else
             {
-                TypingDaemon.Instance.Stop();
+                _typingDaemon.Stop();
+            }
+
+            if (TemporaryShortcut != null)
+            {
+                UserPreferences.Shortcut = TemporaryShortcut;
             }
 
             // Store preferences
             try
             {
-                var dir = Path.GetDirectoryName(SettingsPath);
+                var dir = Path.GetDirectoryName(_settingsPath);
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
 
                 var json = JsonSerializer.Serialize(UserPreferences, new JsonSerializerOptions { WriteIndented = true });
-                File.WriteAllText(SettingsPath, json);
+                File.WriteAllText(_settingsPath, json);
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to save settings: {ex.Message}");
             }
         }
-        public static void EnableHaraka()
+        public void EnableHaraka()
         {
             UserPreferences.IsHarakaEnabled = true;
             Save(); 
         }
 
-        public static void DisableHaraka()
+        public void DisableHaraka()
         {
             UserPreferences.IsHarakaEnabled = false;
             Save();

@@ -1,18 +1,20 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Haraka.Utils;
+using Haraka.Services;
 
 namespace Haraka
 {
     public partial class App : Application
     {
+        private static AppServices? AppServices { get; set; }
         public override void Initialize()
         {
+            AppServices = new AppServices();
             AvaloniaXamlLoader.Load(this);
-            if (SettingsManager.UserPreferences.IsHarakaEnabled)
+            if (AppServices.SettingsManager.UserPreferences.IsHarakaEnabled)
             {
-                SettingsManager.EnableHaraka();
+                AppServices.SettingsManager.EnableHaraka();
             }
         }
 
@@ -20,7 +22,7 @@ namespace Haraka
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = new MainWindow(AppServices);
             }
             base.OnFrameworkInitializationCompleted();
         }

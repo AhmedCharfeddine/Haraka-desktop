@@ -2,8 +2,8 @@
 using System;
 using System.Runtime.InteropServices;
 using Avalonia;
-using Haraka.Services.CaretPositionProvider;
 
+namespace Haraka.Services.CaretPositionProvider;
 public class WindowsCaretPositionProvider : ICaretPositionProvider
 {
     [DllImport("user32.dll")]

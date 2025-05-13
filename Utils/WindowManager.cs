@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Haraka.Services;
 using Haraka.Views;
 
 namespace Haraka.Utils
@@ -7,11 +8,11 @@ namespace Haraka.Utils
     {
         private static Window? _settingsWindow;
 
-        public static void OpenSettingsWindow()
+        public static void OpenSettingsWindow(AppServices services)
         {
             if (_settingsWindow == null || !_settingsWindow.IsVisible)
             {
-                _settingsWindow = new SettingsWindow();
+                _settingsWindow = new SettingsWindow(services);
 
                 _settingsWindow.Closed += (_, _) =>
                 {
