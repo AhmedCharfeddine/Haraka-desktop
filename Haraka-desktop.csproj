@@ -29,7 +29,9 @@
     </PackageReference>
     <PackageReference Include="InputSimulator" Version="1.0.4" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
-	
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="NAudio.Vorbis" Version="1.5.0" />
+		
 	<Resource Include="Assets/haraka-logo.ico" />
 	<Content Include="Assets/haraka-logo.ico">
 		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -52,6 +54,12 @@
 
   <ItemGroup>
     <Folder Include="bin\Release\net8.0\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <Content Include="Assets\Sounds\*.ogg">
+		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -109,6 +117,12 @@
     <None Include="bin\Debug\net8.0\System.IO.Pipelines.dll" />
     <None Include="bin\Debug\net8.0\Tmds.DBus.Protocol.dll" />
     <Content Include="bin\Haraka.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Assets\Sounds\disable_sound.ogg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

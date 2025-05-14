@@ -8,7 +8,7 @@ namespace Haraka.Services
 {
     public class AppServices
     {
-
+        public SoundPlayer SoundPlayer { get; private set; }
         public IKeyboardListener KeyboardListener { get; }
         public WindowsCaretPositionProvider CaretPositionProvider { get; }
         public WindowsSuggestionInjector SuggestionInjector { get; }
@@ -18,13 +18,14 @@ namespace Haraka.Services
 
         public AppServices()
         {
+            SoundPlayer = new SoundPlayer();
             KeyboardListener = new WindowsKeyboardListener();
             CaretPositionProvider = new WindowsCaretPositionProvider();
             SuggestionInjector = new WindowsSuggestionInjector();
 
             TypingDaemon = new TypingDaemon(KeyboardListener, CaretPositionProvider, SuggestionInjector);
             SettingsManager = new SettingsManager(TypingDaemon);
-            ShortcutRecorder = new ShortcutRecorder(KeyboardListener, SettingsManager);
+            ShortcutRecorder = new ShortcutRecorder(KeyboardListener, SettingsManager, SoundPlayer);
         }
     }
 }
