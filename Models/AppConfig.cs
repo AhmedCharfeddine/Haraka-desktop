@@ -8,5 +8,6 @@ namespace Haraka.Models
         public int MinWordLength { get; set; } = HarakaConstants.DEFAULT_MINIMUM_WORD_LENGTH;
         public int AutoClosePopupDelayMs { get; set; } = HarakaConstants.DEFAULT_AUTO_CLOSE_POPUP_DELAY_MS;
         public int PopupDebounceDelayMs { get; set; } = HarakaConstants.DEFAULT_POPUP_DEBOUNCE_DELAY_MS;
+        public float NotificationVolume { get; set; } = HarakaConstants.DEFAULT_NOTIFICATION_VOLUME;
     }
 }

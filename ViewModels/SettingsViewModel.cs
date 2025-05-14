@@ -110,7 +110,10 @@ namespace Haraka.ViewModels
 
         public void Save() 
         {
-            _appServices.ShortcutRecorder.CommitToShortcut(_appServices.SettingsManager.TemporaryShortcut);
+            if (_appServices.SettingsManager.TemporaryShortcut != null)
+            { 
+                _appServices.ShortcutRecorder.CommitToShortcut(_appServices.SettingsManager.TemporaryShortcut); 
+            }
             _appServices.SettingsManager.Save(); 
         }
 

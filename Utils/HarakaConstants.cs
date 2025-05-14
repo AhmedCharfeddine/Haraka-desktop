@@ -1,6 +1,6 @@
 ﻿namespace Haraka.Utils
 {
-    public class HarakaConstants
+    public static class HarakaConstants
     {
         public const string APP_DATA_FOLDER_NAME = "Haraka";
         public const string USER_PREFERENCES_FILE_NAME = "settings.json";
@@ -20,5 +20,13 @@
 
         public static int DEFAULT_AUTO_CLOSE_POPUP_DELAY_MS = 4000;
         public static int DEFAULT_POPUP_DEBOUNCE_DELAY_MS = 300;
+
+        public static string ENABLE_HARAKA_NOTIFICATION_SOUND_PATH = "Assets/Sounds/enable_sound.ogg";
+        public static string DISABLE_HARAKA_NOTIFICATION_SOUND_PATH = "Assets/Sounds/disable_sound.ogg";
+
+        public static string ENABLE_HARAKA_NOTIFICATION_SOUND = "toggleOn";
+        public static string DISABLE_HARAKA_NOTIFICATION_SOUND = "toggleOff";
+
+        public static float DEFAULT_NOTIFICATION_VOLUME = 0.1f;
     }
 }

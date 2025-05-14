@@ -13,13 +13,15 @@ namespace Haraka.Services.KeystrokeManagers
 
         private SettingsManager _settingsManager { get; set; }
         private IKeyboardListener _keyboardListener { get; set; }
+        private SoundPlayer _soundPlayer { get; set; }
 
         private bool _isRecordingShortcut = false;
         private bool _wasHarakaEnabledBeforeRecording = false;
         private ToggleShortcut? _currentShortcut;
 
-        public ShortcutRecorder(IKeyboardListener keyboardListener, SettingsManager settingsManager)
+        public ShortcutRecorder(IKeyboardListener keyboardListener, SettingsManager settingsManager, SoundPlayer soundPlayer)
         {
+            _soundPlayer = soundPlayer;
             _settingsManager = settingsManager;
             _keyboardListener = keyboardListener;
             _keyboardListener.ShortcutTriggered += OnShortcutTriggered;
@@ -32,10 +34,12 @@ namespace Haraka.Services.KeystrokeManagers
             if (_settingsManager.UserPreferences.IsHarakaEnabled)
             {
                 _settingsManager.DisableHaraka();
+                if (_settingsManager.UserPreferences.IsNotificationSoundEnabled) { _soundPlayer.PlayDisableSound(); }
             }
             else
             {
                 _settingsManager.EnableHaraka();
+                if (_settingsManager.UserPreferences.IsNotificationSoundEnabled) { _soundPlayer.PlayEnableSound(); }
             }
         }
 
