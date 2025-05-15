@@ -33,7 +33,7 @@ namespace Haraka.Utils
             }
             catch
             {
-                UserPreferences = new UserPreferences(); // fallback
+                UserPreferences = new UserPreferences();
             }
         }
         private static string GetSettingsPath()

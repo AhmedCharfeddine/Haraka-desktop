@@ -1,0 +1,28 @@
+<Window
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Haraka.Views.ToastNotificationWindow"
+    Width="200"
+    Height="60"
+    CanResize="False"
+    SystemDecorations="None"
+    ShowInTaskbar="False"
+    Background="Transparent"
+    TransparencyLevelHint="AcrylicBlur, Blur, Transparent"
+    Topmost="True"
+    WindowStartupLocation="Manual"
+    ShowActivated="False">
+
+	<Border Background="#CC1E1E2F"
+            CornerRadius="12"
+            BorderBrush="#66FFFFFF"
+            BorderThickness="1"
+            Padding="12">
+		<TextBlock x:Name="MessageTextBlock"
+                   Text="Haraka Enabled"
+                   Foreground="White"
+                   FontSize="16"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+	</Border>
+</Window>
