@@ -28,5 +28,9 @@
         public static string DISABLE_HARAKA_NOTIFICATION_SOUND = "toggleOff";
 
         public static float DEFAULT_NOTIFICATION_VOLUME = 0.1f;
+
+        public static int DEFAULT_AUTO_CLOSE_TOAST_DELAY_MS = 2500;
+
+        public static int DEFAULT_TOAST_PADDING = 20;
     }
 }

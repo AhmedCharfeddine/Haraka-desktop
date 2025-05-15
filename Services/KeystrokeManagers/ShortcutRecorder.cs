@@ -34,11 +34,13 @@ namespace Haraka.Services.KeystrokeManagers
             if (_settingsManager.UserPreferences.IsHarakaEnabled)
             {
                 _settingsManager.DisableHaraka();
+                WindowManager.OpenToastNotificationWindow(false);
                 if (_settingsManager.UserPreferences.IsNotificationSoundEnabled) { _soundPlayer.PlayDisableSound(); }
             }
             else
             {
                 _settingsManager.EnableHaraka();
+                WindowManager.OpenToastNotificationWindow(true);
                 if (_settingsManager.UserPreferences.IsNotificationSoundEnabled) { _soundPlayer.PlayEnableSound(); }
             }
         }

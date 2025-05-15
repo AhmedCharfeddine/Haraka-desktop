@@ -9,5 +9,7 @@ namespace Haraka.Models
         public int AutoClosePopupDelayMs { get; set; } = HarakaConstants.DEFAULT_AUTO_CLOSE_POPUP_DELAY_MS;
         public int PopupDebounceDelayMs { get; set; } = HarakaConstants.DEFAULT_POPUP_DEBOUNCE_DELAY_MS;
         public float NotificationVolume { get; set; } = HarakaConstants.DEFAULT_NOTIFICATION_VOLUME;
+        public int AutoCloseToastDelayMs { get; set; } = HarakaConstants.DEFAULT_AUTO_CLOSE_TOAST_DELAY_MS;
+        public int ToastPadding { get; set; } = HarakaConstants.DEFAULT_TOAST_PADDING;
     }
 }
