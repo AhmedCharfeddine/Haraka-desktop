@@ -12,9 +12,6 @@ namespace Haraka.Services.KeyboardListeners
     {
         public event EventHandler<string>? WordTyped;
         public event EventHandler<string>? WordAccepted;
-        // TODO: fire this event up. Also, globalHook should be decoupled from 
-        // typingDaemon in order to not be dependant on IsHarakaEnabled for
-        // listening to the shortcut.
         public event EventHandler? ShortcutTriggered;
 
         private IKeyboardMouseEvents _globalHook = Hook.GlobalEvents();
@@ -29,7 +26,6 @@ namespace Haraka.Services.KeyboardListeners
         {
             if (!_isTypingActive)
             {
-                //_globalHook = Hook.GlobalEvents();
                 _globalHook.KeyPress += OnKeyPress;
                 _globalHook.KeyDown += OnKeyDown;
                 _globalHook.MouseClick += OnMouseClick;
@@ -46,8 +42,6 @@ namespace Haraka.Services.KeyboardListeners
                     _globalHook.KeyPress -= OnKeyPress;
                     _globalHook.KeyDown -= OnKeyDown;
                     _globalHook.MouseClick -= OnMouseClick;
-                    //_globalHook.Dispose();
-                    //_globalHook = null;
                 }
 
                 _isTypingActive = false;
