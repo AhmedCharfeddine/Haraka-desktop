@@ -31,6 +31,9 @@
 
         public static int DEFAULT_AUTO_CLOSE_TOAST_DELAY_MS = 2500;
 
-        public static int DEFAULT_TOAST_PADDING = 20;
+        public static int DEFAULT_X_TOAST_PADDING = 75;
+        public static int DEFAULT_Y_TOAST_PADDING = 25;
+
+        public static int FADE_IN_OUT_ANIMATION_DURATION_MS = 250;
     }
 }

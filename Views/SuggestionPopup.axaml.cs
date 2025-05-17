@@ -1,8 +1,5 @@
 using Avalonia.Controls;
-using Avalonia.Platform;
 using Haraka.Services.CaretPositionProvider;
-using System;
-using System.Runtime.InteropServices;
 
 namespace Haraka.Views;
 
@@ -12,7 +9,7 @@ public partial class SuggestionPopup : Window
     {
         InitializeComponent();
     }
-
+                
     public void ShowNearCaret(ICaretPositionProvider caretProvider, string suggestion)
     {
         var caretPos = caretProvider.GetCaretScreenPosition();

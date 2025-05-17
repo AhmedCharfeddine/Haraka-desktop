@@ -11,9 +11,10 @@ namespace Haraka.Utils
     public static class WindowManager
     {
         private static Window? _settingsWindow;
-        private static Window? _toastNotificationWindow;
+        private static ToastNotificationWindow _toastNotificationWindow;
         private static bool? _toastState;
         private static readonly Timer _autoCloseToastTimer = new(ConfigManager.Config.AutoCloseToastDelayMs);
+        private static readonly TimeSpan fadeTimeSpan = TimeSpan.FromMilliseconds(ConfigManager.Config.FadeInOutAnimationDurationMs);
 
         static WindowManager()
         {
@@ -23,11 +24,11 @@ namespace Haraka.Utils
         private static void OnAutoCloseToastTimerElapsed(object? sender, ElapsedEventArgs e)
         {
             _autoCloseToastTimer.Stop();
-            Dispatcher.UIThread.Post(() =>
+            Dispatcher.UIThread.Post(async () =>
             {
                 _toastState = null;
-                _toastNotificationWindow?.Hide();
-                _toastNotificationWindow = null;
+                await _toastNotificationWindow.FadeOutAsync(fadeTimeSpan);
+                _toastNotificationWindow.Hide();
             });
         }
 
@@ -53,7 +54,7 @@ namespace Haraka.Utils
             if ((_toastNotificationWindow == null && _toastState == null) ||
                 (_toastState != isEnabled))
             {
-                Dispatcher.UIThread.Post(() =>
+                Dispatcher.UIThread.Post(async () =>
                 {
                     if (_toastNotificationWindow?.IsVisible == true)
                     {
@@ -62,7 +63,7 @@ namespace Haraka.Utils
                     _toastState = isEnabled;
                     _toastNotificationWindow = new ToastNotificationWindow(isEnabled);
                     _toastNotificationWindow.Opened += AdjustToastPosition;
-                    _toastNotificationWindow.Show();
+                    await _toastNotificationWindow.FadeInAsync(fadeTimeSpan);
                 });
                 _autoCloseToastTimer.Stop();
                 _autoCloseToastTimer.Start();
@@ -75,9 +76,10 @@ namespace Haraka.Utils
             var screens = toast?.Screens;
             var primary = screens?.Primary;
 
-            var padding = ConfigManager.Config.ToastPadding;
-            var x = primary?.WorkingArea.Right - toast?.Width - padding;
-            var y = primary?.WorkingArea.Bottom - toast?.Height - padding;
+            var paddingX = ConfigManager.Config.ToastXPadding;
+            var paddingY = ConfigManager.Config.ToastYPadding;
+            var x = primary?.WorkingArea.Right - toast?.Width - paddingX;
+            var y = primary?.WorkingArea.Bottom - toast?.Height - paddingY;
 
             toast.Position = new PixelPoint((int)x, (int)y);
         }

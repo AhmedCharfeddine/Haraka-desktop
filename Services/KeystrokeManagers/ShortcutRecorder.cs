@@ -78,7 +78,6 @@ namespace Haraka.Services.KeystrokeManagers
                 if (isRecordingOver || key == Key.Escape)
                 {
                     _isRecordingShortcut = false;
-                    // TODO: send signal to end recording
                     RecordingEnded?.Invoke(this, _currentShortcut);
                     _keyboardListener.StartListeningForShortcut();
                     if (_wasHarakaEnabledBeforeRecording)
