@@ -1,23 +1,20 @@
-using System;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
 using Haraka.Services;
 using Haraka.Utils;
+using Haraka.ViewModels;
 
 namespace Haraka
 {
     public partial class MainWindow : Window
     {
         private readonly AppServices _appServices;
-        private TrayIcon _trayIcon;
 
         public MainWindow(AppServices services)
         {
             _appServices = services;
+            DataContext = new MainWindowViewModel(services);
             InitializeComponent();
-            InitializeTrayIcon();
             InitializeAppIcon();
         }
 
@@ -26,71 +23,6 @@ namespace Haraka
             this.Icon = new WindowIcon(HarakaConstants.HARAKA_ICON_CIRCLE_PATH);
         }
 
-        private void InitializeTrayIcon()
-        {
-            _trayIcon = new TrayIcon
-            {
-                Icon = new WindowIcon(HarakaConstants.HARAKA_ICON_CIRCLE_PATH),
-                ToolTipText = "Haraka",
-                Menu = CreateTrayMenu()
-            };
-
-            _trayIcon.Clicked += (_, __) => WindowManager.OpenSettingsWindow(_appServices);
-
-            _trayIcon.IsVisible = true;
-        }
-
-        private NativeMenu CreateTrayMenu()
-        {
-            var toggleOn = new NativeMenuItem("On");
-            var toggleOff = new NativeMenuItem("Off");
-
-            toggleOn.Click += (_, __) => ToggleOn(toggleOff);
-            toggleOff.Click += (_, __) => ToggleOff(toggleOn);
-
-            var toggleSubmenu = new NativeMenu()
-            {
-                toggleOn,
-                toggleOff
-            };
-
-            var toggleMenu = new NativeMenuItem("Toggle")
-            {
-                Menu = toggleSubmenu
-            };
-
-            var settingsItem = new NativeMenuItem("Settings");
-            settingsItem.Click += (_, __) => WindowManager.OpenSettingsWindow(_appServices);
-
-            var quitItem = new NativeMenuItem("Quit");
-            quitItem.Click += (_, __) => QuitApp();
-
-            return new NativeMenu
-            {
-                toggleMenu,
-                settingsItem,
-                new NativeMenuItemSeparator(),
-                quitItem
-            };
-        }
-
-        private void QuitApp()
-        {
-            if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
-                lifetime.Shutdown();
-        }
-
-        private void ToggleOn(NativeMenuItem toggleOff)
-        {
-            _appServices.SettingsManager.EnableHaraka();
-            Console.WriteLine("Toggled ON");
-        }
-
-        private void ToggleOff(NativeMenuItem toggleOn)
-        {
-            _appServices.SettingsManager.DisableHaraka();
-            Console.WriteLine("Toggled OFF");
-        }
         private async void Transliterate(object? sender, RoutedEventArgs e)
         {
             var input = InputTextBox.Text;
@@ -107,5 +39,10 @@ namespace Haraka
             TransliterationResult.Text = result;
         }
 
+        protected override void OnClosing(WindowClosingEventArgs e)
+        {
+            base.OnClosing(e);
+            _appServices.SettingsManager.Save();
+        }
     }
 }

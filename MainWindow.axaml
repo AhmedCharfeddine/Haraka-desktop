@@ -2,9 +2,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:vm="clr-namespace:Haraka.ViewModels"
         xmlns:tray="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
         mc:Ignorable="d" Width="500" Height="600"
         x:Class="Haraka.MainWindow"
+		x:DataType="vm:MainWindowViewModel"
         Title="Welcome to Haraka!">
 
 	<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
@@ -17,5 +19,11 @@
 		<TextBox Name="InputTextBox" Width="200" Margin="20,20,20,20"/>
 		<Button HorizontalAlignment="Center" Content="Try it!" Width="80" Click="Transliterate"/>
 		<TextBlock HorizontalAlignment="Center" Name="TransliterationResult"/>
+
+		<StackPanel Orientation="Horizontal" Spacing="50">
+			<CheckBox IsChecked="{Binding ShowMainWindowOnStartup}"/>
+			<TextBlock Text="Always show this window" VerticalAlignment="Center" Width="250"/>
+		</StackPanel>
+
 	</StackPanel>
 </Window>

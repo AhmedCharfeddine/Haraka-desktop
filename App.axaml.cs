@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Haraka.Services;
+using Haraka.Utils;
 
 namespace Haraka
 {
@@ -22,7 +23,13 @@ namespace Haraka
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow(AppServices);
+                desktop.ShutdownMode = Avalonia.Controls.ShutdownMode.OnExplicitShutdown;
+
+                WindowManager.InitializeTrayIcon(AppServices);
+                if (AppServices.SettingsManager.UserPreferences.ShowMainWindowOnStartup)
+                {
+                    WindowManager.OpenMainWindow(AppServices);
+                }
             }
             base.OnFrameworkInitializationCompleted();
         }

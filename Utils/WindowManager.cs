@@ -11,6 +11,8 @@ namespace Haraka.Utils
     public static class WindowManager
     {
         private static Window? _settingsWindow;
+        private static TrayMenu _trayMenu;
+        private static MainWindow? _mainWindow;
         private static ToastNotificationWindow _toastNotificationWindow;
         private static bool? _toastState;
         private static readonly Timer _autoCloseToastTimer = new(ConfigManager.Config.AutoCloseToastDelayMs);
@@ -19,6 +21,11 @@ namespace Haraka.Utils
         static WindowManager()
         {
             _autoCloseToastTimer.Elapsed += OnAutoCloseToastTimerElapsed;
+        }
+
+        public static void InitializeTrayIcon(AppServices appServices)
+        { 
+            _trayMenu = new TrayMenu(appServices);
         }
 
         private static void OnAutoCloseToastTimerElapsed(object? sender, ElapsedEventArgs e)
@@ -46,6 +53,23 @@ namespace Haraka.Utils
             else
             {
                 _settingsWindow.Activate();
+            }
+        }
+        
+        public static void OpenMainWindow(AppServices services)
+        {
+            if (_mainWindow == null || !_mainWindow.IsVisible)
+            {
+                _mainWindow = new MainWindow(services);
+                _mainWindow.Closed += (_, _) =>
+                {
+                    _mainWindow = null;
+                };
+                _mainWindow.Show();
+            }
+            else
+            {
+                _mainWindow.Activate();
             }
         }
 
