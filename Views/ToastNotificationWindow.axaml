@@ -9,7 +9,7 @@
     SystemDecorations="None"
     ShowInTaskbar="False"
     Topmost="True"
-	Background="Transparent"
+	Background="{DynamicResource WindowBackgroundBrush}"
     WindowStartupLocation="Manual"
     ShowActivated="False">
 	
@@ -20,6 +20,7 @@
         BorderThickness="1"
         Padding="12">
 		<TextBlock x:Name="MessageTextBlock"
+				   Classes="H1Text"
                    Foreground="White"
                    FontSize="16"
                    HorizontalAlignment="Center"

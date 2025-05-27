@@ -18,6 +18,11 @@ namespace Haraka.ViewModels
             }
         }
 
+        public string ToggleShortcutString
+        {
+            get => _appServices.SettingsManager.UserPreferences.Shortcut.ToString();
+        }
+
         public MainWindowViewModel(AppServices appServices)
         {
             _appServices = appServices;

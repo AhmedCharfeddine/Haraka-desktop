@@ -2,54 +2,72 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:HarakaDesktop.Controls" 
 		xmlns:vm="clr-namespace:Haraka.ViewModels"
         mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
         x:Class="Haraka.Views.SettingsWindow"
 		x:DataType="vm:SettingsViewModel"
-        Width="900" Height="500"
+        Width="400" Height="500"
         Title="Haraka Settings"
         WindowStartupLocation="CenterScreen"
 		CanResize="False"
-		ExtendClientAreaToDecorationsHint="True">
+		ExtendClientAreaToDecorationsHint="True"
+		Background="{DynamicResource WindowBackgroundBrush}">
 
-		<StackPanel Margin="20,50,20,50">
 
-			<!-- Toggle Haraka -->
-			<StackPanel Orientation="Horizontal" Spacing="10">
-				<CheckBox IsChecked="{Binding IsHarakaEnabled}"/>
-				<TextBlock Text="Enable Haraka" VerticalAlignment="Center" Width="250"/>
-			</StackPanel>
+	<Grid>
+		<DockPanel>
+
+			<!-- Custom Title Bar -->
+			<local:CustomTitleBar DockPanel.Dock="Top" />
+
+			<!-- Your window content -->
+			<Grid>
+				<StackPanel Margin="20,50,20,50" Spacing="12">
+
+					<!-- Toggle Haraka -->
+					<StackPanel Orientation="Horizontal">
+						<ToggleSwitch IsChecked="{Binding IsHarakaEnabled}"/>
+						<TextBlock Text="Enable Haraka" VerticalAlignment="Center" Width="250"/>
+					</StackPanel>
 			
-			<!-- Launch on startup -->
-			<StackPanel Orientation="Horizontal" Spacing="10">
-				<CheckBox IsChecked="{Binding LaunchOnStartup}"/>
-				<TextBlock Text="Launch on Startup" VerticalAlignment="Center" Width="250"/>
-			</StackPanel>
+					<!-- Launch on startup -->
+					<StackPanel Orientation="Horizontal">
+						<ToggleSwitch IsChecked="{Binding LaunchOnStartup}"/>
+						<TextBlock Text="Launch on Startup" VerticalAlignment="Center" Width="250"/>
+					</StackPanel>
 			
-			<!-- Sound notification enable -->
-			<StackPanel Orientation="Horizontal" Spacing="10">
-				<CheckBox IsChecked="{Binding IsNotificationSoundEnabled}"/>
-				<TextBlock Text="Toggle sound notification" VerticalAlignment="Center" Width="250"/>
-			</StackPanel>
+					<!-- Sound notification enable -->
+					<StackPanel Orientation="Horizontal">
+						<ToggleSwitch IsChecked="{Binding IsNotificationSoundEnabled}"/>
+						<TextBlock Text="Toggle sound notification" VerticalAlignment="Center" Width="250"/>
+					</StackPanel>
 
-			<!-- Shortcut Text Input -->
-			<StackPanel Orientation="Horizontal" Spacing="8" Margin="50,50,0,0">
-				<TextBlock Text="Shortcut:" VerticalAlignment="Center" Width="120"/>
-				<TextBox Width="400"
-						 Name="ShortcutTextBox"
-						 Text="{Binding Shortcut, Mode=OneWay}"
-						 KeyDown="OnShortcutKeyDown"
-						 KeyUp="OnShortcutKeyUp" />
-				<Button Content="Start Recording" 
-						Width="100" 
-						IsEnabled="{Binding IsStartRecordingBtnEnabled}" 
-						Click="Start_Recording_Shortcut" />
-			</StackPanel>
+					<!-- Shortcut Text Input -->
+					<StackPanel Orientation="Horizontal" Spacing="8" Margin="0,50,0,0">
+						<TextBlock Text="Shortcut" VerticalAlignment="Center" Width="60"/>
+						<TextBox Width="160"
+								 Name="ShortcutTextBox"
+								 Text="{Binding Shortcut, Mode=OneWay}"
+								 KeyDown="OnShortcutKeyDown"
+								 KeyUp="OnShortcutKeyUp" />
+						<Button Content="Record Shortcut" 
+								Classes="secondary"
+								Width="130" 
+								IsEnabled="{Binding IsStartRecordingBtnEnabled}" 
+								Click="Start_Recording_Shortcut" />
+					</StackPanel>
 
-			<!-- Buttons -->
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10" Margin="0,200,0,0">
-				<Button Content="Save" Width="80" Click="Save_Click"/>
-				<Button Content="Cancel" Width="80" Click="Cancel_Click"/>
-			</StackPanel>
-		</StackPanel>
+					<!-- Buttons -->
+					<StackPanel Orientation="Horizontal" 
+								HorizontalAlignment="Right" 
+								VerticalAlignment="Bottom"
+								Spacing="10">
+						<Button Classes="primary" Content="Save" Width="80" Click="Save_Click"/>
+						<Button Classes="secondary" Content="Cancel" Width="80" Click="Cancel_Click"/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</DockPanel>
+	</Grid>
 </Window>

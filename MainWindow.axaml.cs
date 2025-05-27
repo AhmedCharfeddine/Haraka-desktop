@@ -25,7 +25,7 @@ namespace Haraka
 
         private async void Transliterate(object? sender, RoutedEventArgs e)
         {
-            var input = InputTextBox.Text;
+            var input = InputTextBlock.Text;
 
             if (string.IsNullOrWhiteSpace(input) || input.Length <= 3)
             {

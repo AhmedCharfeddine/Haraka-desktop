@@ -2,28 +2,86 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:local="clr-namespace:HarakaDesktop.Controls" 
 		xmlns:vm="clr-namespace:Haraka.ViewModels"
         xmlns:tray="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls"
         mc:Ignorable="d" Width="500" Height="600"
         x:Class="Haraka.MainWindow"
+		CanResize="False"
+		ExtendClientAreaToDecorationsHint="True"
+		ExtendClientAreaChromeHints="Default"
+		TransparencyLevelHint="AcrylicBlur"
 		x:DataType="vm:MainWindowViewModel"
-        Title="Welcome to Haraka!">
+        Title="Haraka"
+		Background="{DynamicResource WindowBackgroundBrush}">
 
-	<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
-		<TextBlock HorizontalAlignment="Center" Text="Welcome to Haraka!"/>
-		<TextBlock HorizontalAlignment="Center" Text="This window will be used in order to show the user"/>
-		<TextBlock HorizontalAlignment="Center" Text="a quick demo on how to use the app."/>
-		<TextBlock HorizontalAlignment="Center" Text="It will also have a checkbox with"/>
-		<TextBlock HorizontalAlignment="Center" Text="'Do not show again'"/>
-		
-		<TextBox Name="InputTextBox" Width="200" Margin="20,20,20,20"/>
-		<Button HorizontalAlignment="Center" Content="Try it!" Width="80" Click="Transliterate"/>
-		<TextBlock HorizontalAlignment="Center" Name="TransliterationResult"/>
+	<Grid>
+		<DockPanel>
 
-		<StackPanel Orientation="Horizontal" Spacing="50">
-			<CheckBox IsChecked="{Binding ShowMainWindowOnStartup}"/>
-			<TextBlock Text="Always show this window" VerticalAlignment="Center" Width="250"/>
-		</StackPanel>
+			<!-- Custom Title Bar -->
+			<local:CustomTitleBar DockPanel.Dock="Top" />
 
-	</StackPanel>
+			<!-- Your window content -->
+			<Grid>
+				<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Orientation="Vertical">
+					<TextBlock Classes="H1Text" 
+							   Padding="20"
+							   HorizontalAlignment="Center" 
+							   Text="Welcome to Haraka"/>
+
+					<ScrollViewer 
+						HorizontalScrollBarVisibility="Auto" 
+						VerticalScrollBarVisibility="Auto"
+						Margin="0,0,0,20">
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+
+							<!-- Centered content container -->
+							<StackPanel Grid.Row="1"
+										Width="450"
+										HorizontalAlignment="Center"
+										Spacing="12">
+
+								<TextBlock Classes="H3Text" 
+										   HorizontalAlignment="Center" 
+										   Text="Paste your text below to get the result"/>
+
+								<TextBox Name="InputTextBlock"
+										 Classes="LargeTextArea"
+										 Height="150"
+										 HorizontalAlignment="Stretch"/>
+
+								<Button Classes="primary"
+										HorizontalAlignment="Stretch"
+										Content="Try it!"
+										Click="Transliterate"/>
+
+								<TextBox Name="TransliterationResult"
+										 Classes="OutputArea"
+										 Height="150"
+										 IsReadOnly="True"
+										 Focusable="False"
+										 HorizontalAlignment="Stretch"/>
+
+								<TextBlock Classes="CaptionText"
+										   HorizontalAlignment="Center">
+									<Run Text="Or use "/>
+									<Run Text="{Binding ToggleShortcutString, Mode=OneWay}"/>
+									<Run Text=" to toggle live typing"/>		
+								</TextBlock>
+							</StackPanel>
+						</Grid>
+					</ScrollViewer>
+					
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+						<ToggleSwitch IsChecked="{Binding ShowMainWindowOnStartup}"/>
+						<TextBlock Classes="HelperText" Text="Show this window on startup" VerticalAlignment="Center"/>
+					</StackPanel>
+				</StackPanel>
+			</Grid>
+		</DockPanel>
+	</Grid>
 </Window>

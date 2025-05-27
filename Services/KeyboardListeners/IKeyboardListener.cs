@@ -11,7 +11,6 @@ namespace Haraka.Services.KeyboardListeners
 
         void StartListeningForShortcut();
         void StopListeningForShortcut();
-
         void StartListeningForTyping();
         void StopListeningForTyping();
         void SetToggleShortcut(ToggleShortcut shortcut);

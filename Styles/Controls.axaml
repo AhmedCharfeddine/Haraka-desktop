@@ -1,0 +1,54 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+	<!-- Primary button -->
+	<Style Selector="Button.primary">
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Background" Value="{DynamicResource PrimaryBrush}" />
+		<Setter Property="Foreground" Value="White" />
+		<Setter Property="CornerRadius" Value="22"/>
+		<Setter Property="Padding" Value="12,6" />
+	</Style>
+
+	<!-- Secondary button -->
+	<Style Selector="Button.secondary">
+		<Setter Property="HorizontalContentAlignment" Value="Center"/>
+		<Setter Property="VerticalContentAlignment" Value="Center"/>
+		<Setter Property="Background" Value="{DynamicResource SecondaryBrush}" />
+		<Setter Property="Foreground" Value="Black" />
+		<Setter Property="Padding" Value="12,6" />
+		<Setter Property="CornerRadius" Value="22" />
+	</Style>
+
+	<!-- Slider switch toggle -->
+	<Style Selector="ToggleSwitch">
+		<Setter Property="OnContent" Value="" />
+		<Setter Property="OffContent" Value="" />
+	</Style>
+
+	<Style Selector="TextBox.LargeTextArea">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Padding" Value="12"/>
+		<Setter Property="Background" Value="{DynamicResource TextAreaBackgroundBrush}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+		<Setter Property="BorderThickness" Value="1"/>
+		<Setter Property="CornerRadius" Value="22"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="AcceptsReturn" Value="True"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<Style Selector="TextBox.OutputArea">
+		<Setter Property="IsReadOnly" Value="True"/>
+		<Setter Property="Background" Value="{DynamicResource TextAreaBackgroundBrush}"/>
+		<Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+		<Setter Property="CornerRadius" Value="22"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Padding" Value="22"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+		<Setter Property="AcceptsReturn" Value="True"/>
+		<Setter Property="Focusable" Value="False"/>
+	</Style>
+</Styles>

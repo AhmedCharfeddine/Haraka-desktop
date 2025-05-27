@@ -5,6 +5,7 @@
 	  <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+	<AssemblyName>HarakaDesktop</AssemblyName>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <RootNamespace>Haraka</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -41,10 +42,9 @@
 	<Content Include="bin\Debug\net8.0\Haraka-desktop.deps.json" />
 	<Content Include="bin\Debug\net8.0\Haraka-desktop.runtimeconfig.json" />
 	  
-	<Resource Include="Assets/haraka-logo-circle.ico" />
-    <Content Include="Assets/haraka-logo-circle.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+	<Content Include="Assets/haraka-logo-circle.ico">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</Content>
 
 	<Resource Include="Assets/haraka-logo-purple.svg" />
     <Content Include="Assets/haraka-logo-purple.svg">

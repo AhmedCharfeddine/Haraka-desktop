@@ -1,0 +1,60 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	
+	<!-- H1 -->
+	<Style Selector="TextBlock.H1Text">
+		<Setter Property="FontSize" Value="32"/>
+		<Setter Property="FontWeight" Value="Bold"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<!-- H2 -->
+	<Style Selector="TextBlock.H2Text">
+		<Setter Property="FontSize" Value="20"/>
+		<Setter Property="FontWeight" Value="SemiBold"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<!-- H3 -->
+	<Style Selector="TextBlock.H3Text">
+		<Setter Property="FontSize" Value="16"/>
+		<Setter Property="FontWeight" Value="Medium"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<!-- Regular paragraph -->
+	<Style Selector="TextBlock.ParagraphText">
+		<Setter Property="FontSize" Value="14"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<!-- Subtle tip / helper text -->
+	<Style Selector="TextBlock.HelperText">
+		<Setter Property="FontSize" Value="12"/>
+		<Setter Property="FontStyle" Value="Italic"/>
+		<Setter Property="Foreground" Value="{DynamicResource SubtleTextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+
+	<!-- Monospace -->
+	<Style Selector="TextBlock.CodeText">
+		<Setter Property="FontSize" Value="13"/>
+		<Setter Property="FontFamily" Value="Courier New, Consolas, monospace"/>
+		<Setter Property="Background" Value="{DynamicResource CodeBackgroundBrush}"/>
+		<Setter Property="Padding" Value="4,2"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
+	</Style>
+
+	<!-- UI notes/captions -->
+	<Style Selector="TextBlock.CaptionText">
+		<Setter Property="FontSize" Value="11"/>
+		<Setter Property="FontWeight" Value="Normal"/>
+		<Setter Property="Foreground" Value="{DynamicResource SubtleTextBrush}"/>
+		<Setter Property="TextWrapping" Value="Wrap"/>
+	</Style>
+</Styles>

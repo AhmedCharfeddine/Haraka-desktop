@@ -1,0 +1,21 @@
+<UserControl
+  xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  x:Class="HarakaDesktop.Controls.CustomTitleBar">
+
+	<Border Background="{DynamicResource WindowBackgroundBrush}" Height="36" Name="TitleBarBorder">
+		<Grid ColumnDefinitions="Auto,*,Auto,Auto" Margin="4,0">
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="8">
+				<!-- App Icon -->
+				<Image x:Name="AppIcon"
+					   VerticalAlignment="Center"
+					   Width="20" Height="20"/>
+
+				<!-- Title -->
+				<TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=Window}}"
+						   VerticalAlignment="Center"
+						   Foreground="{DynamicResource TextBrush}" Margin="8,0"/>
+			</StackPanel>
+		</Grid>
+	</Border>
+</UserControl>
