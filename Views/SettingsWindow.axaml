@@ -22,15 +22,15 @@
 			<local:CustomTitleBar DockPanel.Dock="Top" />
 
 			<!-- Your window content -->
-			<Grid>
-				<StackPanel Margin="20,50,20,50" Spacing="12">
+			<Grid RowDefinitions="Auto,* ,Auto" Margin="30">
 
+				<StackPanel Grid.Row="0" Spacing="12">
 					<!-- Toggle Haraka -->
 					<StackPanel Orientation="Horizontal">
 						<ToggleSwitch IsChecked="{Binding IsHarakaEnabled}"/>
 						<TextBlock Text="Enable Haraka" VerticalAlignment="Center" Width="250"/>
 					</StackPanel>
-			
+
 					<!-- Launch on startup -->
 					<StackPanel Orientation="Horizontal">
 						<ToggleSwitch IsChecked="{Binding LaunchOnStartup}"/>
@@ -42,22 +42,29 @@
 						<ToggleSwitch IsChecked="{Binding IsNotificationSoundEnabled}"/>
 						<TextBlock Text="Toggle sound notification" VerticalAlignment="Center" Width="250"/>
 					</StackPanel>
+				</StackPanel>
 
+				<StackPanel Grid.Row="1" Spacing="12">
 					<!-- Shortcut Text Input -->
-					<StackPanel Orientation="Horizontal" Spacing="8" Margin="0,50,0,0">
-						<TextBlock Text="Shortcut" VerticalAlignment="Center" Width="60"/>
-						<TextBox Width="160"
-								 Name="ShortcutTextBox"
-								 Text="{Binding Shortcut, Mode=OneWay}"
-								 KeyDown="OnShortcutKeyDown"
-								 KeyUp="OnShortcutKeyUp" />
-						<Button Content="Record Shortcut" 
-								Classes="secondary"
-								Width="130" 
-								IsEnabled="{Binding IsStartRecordingBtnEnabled}" 
-								Click="Start_Recording_Shortcut" />
+					<StackPanel Spacing="10" Margin="0,50,0,0">
+						<TextBlock Text="Shortcut" Width="80" HorizontalAlignment="Left"/>
+						<StackPanel Orientation="Horizontal" Spacing="20">
+							<TextBox Width="180"
+										Name="ShortcutTextBox"
+										Text="{Binding Shortcut, Mode=OneWay}"
+										KeyDown="OnShortcutKeyDown"
+										KeyUp="OnShortcutKeyUp" 
+										CornerRadius="22"/>
+							<Button Content="Record Shortcut"
+									Classes="secondary"
+									Width="140"
+									IsEnabled="{Binding IsStartRecordingBtnEnabled}"
+									Click="Start_Recording_Shortcut" />
+						</StackPanel>
 					</StackPanel>
+				</StackPanel>
 
+				<StackPanel Grid.Row="2" Spacing="12">
 					<!-- Buttons -->
 					<StackPanel Orientation="Horizontal" 
 								HorizontalAlignment="Right" 
