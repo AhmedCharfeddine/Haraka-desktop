@@ -8,13 +8,13 @@
     CanResize="False"
     SystemDecorations="None"
     ShowInTaskbar="False"
+	Background="Transparent"
     Topmost="True"
-	Background="{DynamicResource WindowBackgroundBrush}"
     WindowStartupLocation="Manual"
     ShowActivated="False">
 	
 	<Border x:Name="RootBorder"
-		Background="#CC1E1E2F"
+		Background="{DynamicResource WindowBackgroundBrush}"
 		CornerRadius="12"
         BorderBrush="#66FFFFFF"
         BorderThickness="1"

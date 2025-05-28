@@ -27,6 +27,7 @@
 		<Setter Property="OffContent" Value="" />
 	</Style>
 
+	<!-- Text area -->
 	<Style Selector="TextBox.LargeTextArea">
 		<Setter Property="FontSize" Value="14"/>
 		<Setter Property="Padding" Value="12"/>
@@ -37,8 +38,10 @@
 		<Setter Property="Foreground" Value="{DynamicResource TextBrush}"/>
 		<Setter Property="AcceptsReturn" Value="True"/>
 		<Setter Property="TextWrapping" Value="Wrap"/>
+		<Setter Property="Watermark" Value="Paste your text here"/>
 	</Style>
 
+	<!-- Read-only text area -->
 	<Style Selector="TextBox.OutputArea">
 		<Setter Property="IsReadOnly" Value="True"/>
 		<Setter Property="Background" Value="{DynamicResource TextAreaBackgroundBrush}"/>
