@@ -53,5 +53,7 @@
 		<Setter Property="TextWrapping" Value="Wrap"/>
 		<Setter Property="AcceptsReturn" Value="True"/>
 		<Setter Property="Focusable" Value="False"/>
+		<Setter Property="FlowDirection" Value="RightToLeft"/>
+		<Setter Property="TextAlignment" Value="Right"/>
 	</Style>
 </Styles>

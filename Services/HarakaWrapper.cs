@@ -10,6 +10,7 @@ namespace Haraka.Services
     public class HarakaWrapper
     {
         private string? _harakaBinaryPath { get; set; } = GetHarakaBinaryPath();
+        private const string _harakaCliOptions = "-p";
 
         private static string GetHarakaBinaryPath()
         {
@@ -24,7 +25,7 @@ namespace Haraka.Services
             var psi = new ProcessStartInfo
             {
                 FileName = _harakaBinaryPath,
-                Arguments = $"{ConfigManager.Config.Strategy} {word}",
+                Arguments = $"{ConfigManager.Config.Strategy} {_harakaCliOptions} \"{word}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

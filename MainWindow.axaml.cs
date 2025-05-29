@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Haraka.Services;
@@ -29,14 +30,26 @@ namespace Haraka
 
             if (string.IsNullOrWhiteSpace(input) || input.Length <= 3)
             {
-                TransliterationResult.Text = "Please enter a word.";
+                TransliterationResult.Watermark = "Please type your input";
                 return;
             }
 
             var wrapper = new HarakaWrapper();
             // Run the CLI and get output
             string result = await wrapper.RunTransliterationAsync(input);
-            TransliterationResult.Text = result;
+
+            await AnimateTypingAsync(result);
+        }
+
+        private async Task AnimateTypingAsync(string text)
+        {
+            TransliterationResult.Text = string.Empty;
+
+            foreach (char c in text)
+            {
+                TransliterationResult.Text += c;
+                await Task.Delay(20);
+            }
         }
 
         protected override void OnClosing(WindowClosingEventArgs e)
