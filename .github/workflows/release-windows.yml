@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'  # Trigger only on version tags like v1.0.0
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -20,42 +23,34 @@ jobs:
         id: download_cli
         run: |
           $cliRepo="AhmedCharfeddine/Haraka"
-          $response = Invoke-RestMethod "https://api.github.com/repos/$cliRepo/releases/latest"
+          $apiUrl = "https://api.github.com/repos/$cliRepo/releases/latest"
           $headers = @{ "User-Agent" = "github-action" }
           $response = Invoke-RestMethod -Uri $apiUrl -Headers $headers
-          $asset = $response.assets | Where-Object { $_.name -match "haraka-windows-amd64.exe" }
+          $asset = $response.assets | Where-Object { $_.name -imatch "^Haraka_.*windows_amd64\.tar\.gz$" }
           if (-not $asset) {
-            Write-Error "❌ Could not find haraka-windows-amd64.exe in the latest release."
+            Write-Error "❌ Could not find a matching Haraka CLI archive in the latest release."
             exit 1
           }
           New-Item -ItemType Directory -Path bin -Force | Out-Null
-          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile "bin\haraka.exe"
-        - name: Build Avalonia GUI
+          $archivePath = "bin\haraka.tar.gz"
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $archivePath
+          tar -xzf $archivePath -C bin
+          Remove-Item $archivePath
+      - name: Build Avalonia GUI
+        run: dotnet publish Haraka-desktop.csproj -c Release -f net8.0-windows -r win-x64 -o publish
+      - name: Download .NET Desktop Runtime Installer
         run: |
-          dotnet publish src\Haraka.GUI\Haraka.GUI.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained `
-            -o publish
-      - name: Upload GUI artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: haraka-gui-windows
-          path: publish
-
-  release:
-    needs: build
-    runs-on: windows-latest
-    steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: haraka-gui-windows
-          path: ./artifacts
-      - name: Create GitHub Release
+          $url = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/8.0.16/windowsdesktop-runtime-8.0.16-win-x64.exe"
+          Invoke-WebRequest -Uri $url -OutFile "windowsdesktop-runtime-8.0.16-win-x64.exe"
+      - name: Install Inno Setup
+        run: choco install innosetup --no-progress
+      - name: Build installer with Inno Setup
+        run: |
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" "publish-script.iss"
+      - name: Upload Release Installer
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          files: ./artifacts/**/*
+          files: Output/Haraka-installer.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

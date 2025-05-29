@@ -449,3 +449,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# dotNet windows desktop runtime
+windowsdesktop-runtime-8.0.16-win-x64.exe
