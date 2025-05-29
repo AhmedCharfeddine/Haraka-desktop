@@ -1,0 +1,61 @@
+name: Build and Release Haraka desktop
+
+on:
+  push:
+    tags:
+      - 'v*'  # Trigger only on version tags like v1.0.0
+
+jobs:
+  build:
+    runs-on: windows-latest
+    name: Build GUI for Windows
+    steps:
+      - name: Checkout GUI repo
+        uses: actions/checkout@v4
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Download Haraka CLI binary
+        id: download_cli
+        run: |
+          $cliRepo="AhmedCharfeddine/Haraka"
+          $response = Invoke-RestMethod "https://api.github.com/repos/$cliRepo/releases/latest"
+          $headers = @{ "User-Agent" = "github-action" }
+          $response = Invoke-RestMethod -Uri $apiUrl -Headers $headers
+          $asset = $response.assets | Where-Object { $_.name -match "haraka-windows-amd64.exe" }
+          if (-not $asset) {
+            Write-Error "❌ Could not find haraka-windows-amd64.exe in the latest release."
+            exit 1
+          }
+          New-Item -ItemType Directory -Path bin -Force | Out-Null
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile "bin\haraka.exe"
+        - name: Build Avalonia GUI
+        run: |
+          dotnet publish src\Haraka.GUI\Haraka.GUI.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained `
+            -o publish
+      - name: Upload GUI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: haraka-gui-windows
+          path: publish
+
+  release:
+    needs: build
+    runs-on: windows-latest
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: haraka-gui-windows
+          path: ./artifacts
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: ./artifacts/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
